@@ -1,0 +1,659 @@
+<!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script type='text/javascript' nonce='DinrWqc9JfrD6Mro39hjAg==' src='https://40f5861f-376e-4462-8162-d9cb46ee2a68.frame.claudeusercontent.com/Zn9RbzEuqvqVpWbzWjvwBSLgZfAq3aePucjNhO3z87-oc4sp_G01YBwbjj6yeugnDKVcoXscXw18LDnjGkHf3D2pSD4oTsDG871dM8NyEdPfGCng678E5yWHGlxLw8Irs5-RJh74KrdiDyREkZuUmmOQ-zV5ualjq51ro4POZe4xGmpuMJ0fM2ms_l9l7yKIq9EY2WC88-lF-Jkq6GWD0Bm22u13VJaX9oeNmGoCqxNSt2f5RZwhvcbDylWBMw1QRGUNdHdD-4mEzp9zB3IIyN03-Gs2r_WG9TdSCvuYIPy2g0fgHv_7PqnsFGH6dhEAwZluRx16Rs1oGzSiDB-wxzgt0LHx0-R9BWPyZE8goSCH723MG7dTUWyManhJPfUUd_aixVkNJDjEeZHwua6SOHR6hEGp8IcY8rLEO0P8HwoYIQtRi3QQT9hmMdaaNSHYXISq39R1VEaAtklAnek2j4oWO0DOUvZw8m_Z13BuBGGou_JE35oo4Dq0k-BtTriRYosiG_qxrwNWDcnCUrcf0CcufBEUloa2SpDqZDbxVm65nT-Y19Fqh2HgVPe_W4rKCNHLs5Yn7oUw4UudfV8MMZTTrTa0mvKYWw896bdX7xK510lM0Wyb_nAUaP3obObt0tHSEZNXuc6J8ApL9te5CLAKyvGMGY_a49OEADVSn97SOaiJFoTUJ6kj-30HgNZxLbPBRCYzmoCvWwgsnF7FuQ'></script></head><body>
+<title>Space Explorer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;700&amp;display=swap">
+<style>
+/* Layout: a slim header with four views (planets, black holes, quiz, planet lab). Deep indigo ground, amber as the single accent, one animated black hole as the bold moment. */
+:root {
+  color-scheme: dark;
+  --bg: #0a0e1f;
+  --surface: #121936;
+  --surface-2: #1a2347;
+  --line: #2a3563;
+  --fg: #e8ebf7;
+  --muted: #99a2c6;
+  --accent: #ffb454;
+  --accent-ink: #1a1100;
+  --cool: #6fb0ff;
+  --good: #5fd39a;
+  --warn: #ffcf6b;
+  --bad: #ff8a8a;
+  --font-display: "Space Grotesk", Inter, system-ui, sans-serif;
+  --font-body: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mono { font-family: var(--font-mono); }
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.lede { max-width: 62ch; color: var(--muted); margin-top: 12px; }
+:focus-visible { outline: 2px solid var(--cool); outline-offset: 2px; }
+
+header.top { border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 28px; padding-block: 14px; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; letter-spacing: .02em; }
+.brand span { color: var(--accent); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; }
+nav a { padding: 8px 14px; border-radius: 999px; color: var(--muted); text-decoration: none; font-size: .95rem; border: 1px solid transparent; }
+nav a:hover { color: var(--fg); border-color: var(--line); }
+nav a[aria-current="page"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+
+main .wrap { padding-block: 40px 56px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.btn { font: inherit; font-size: .95rem; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); padding: 9px 16px; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="text"], input[type="number"] { font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; min-width: 0; width: 100%; }
+label { font-size: .9rem; color: var(--muted); }
+dl { margin: 0; }
+dt { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+dd { margin: 2px 0 0; font-family: var(--font-mono); font-size: .95rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px 20px; }
+
+/* Planets */
+.picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 20px; }
+.pbtn { display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 10px; background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 999px; font: inherit; font-size: .95rem; cursor: pointer; }
+.pbtn[aria-pressed="true"] { border-color: var(--accent); background: var(--surface-2); }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, color-mix(in srgb, var(--c) 55%, white), var(--c) 50%, color-mix(in srgb, var(--c) 45%, black)); }
+.detail { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; }
+.stage { display: grid; place-items: center; height: 260px; }
+.sphere { position: relative; isolation: isolate; aspect-ratio: 1; border-radius: 50%; max-width: 100%;
+  background: radial-gradient(circle at 32% 30%, color-mix(in srgb, var(--c) 55%, white), var(--c) 45%, color-mix(in srgb, var(--c) 40%, black) 100%);
+  box-shadow: 0 0 60px color-mix(in srgb, var(--c) 25%, transparent); transition: width .35s ease; }
+.sphere.ring::before, .sphere.ring::after { content: ""; position: absolute; left: -32%; right: -32%; top: 40%; bottom: 40%; border: 7px solid rgba(224, 200, 143, .75); border-radius: 50%; transform: rotate(-14deg); }
+.sphere.ring::before { z-index: -1; }
+.sphere.ring::after { z-index: 1; clip-path: inset(50% -10% -10% -10%); }
+.scale-note { font-size: .8rem; color: var(--muted); text-align: center; margin-top: 6px; }
+.detail h3 { font-size: 1.8rem; }
+.detail .blurb { color: var(--muted); margin: 8px 0 20px; max-width: 52ch; }
+.weight { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.weight input { width: 96px; }
+.weight output { font-size: .95rem; }
+.ruler-wrap { margin-top: 28px; }
+.ruler { position: relative; height: 54px; }
+.ruler::before { content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 2px; background: var(--line); }
+.rmark { position: absolute; top: 28px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; border: 0; padding: 0; background: var(--muted); cursor: pointer; }
+.rmark[aria-pressed="true"] { background: var(--accent); width: 18px; height: 18px; margin-left: -9px; top: 26px; }
+.rlabel { position: absolute; top: 0; font-family: var(--font-mono); font-size: .8rem; color: var(--accent); white-space: nowrap; }
+.rends { display: flex; justify-content: space-between; font-size: .78rem; color: var(--muted); font-family: var(--font-mono); }
+.fine { font-size: .82rem; color: var(--muted); margin-top: 18px; }
+
+/* Black holes */
+.bh-stage { margin-top: 28px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #04060d; height: clamp(260px, 46vw, 440px); }
+.bh-stage canvas { display: block; width: 100%; height: 100%; }
+.bh-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; margin-top: 32px; align-items: start; }
+.anatomy { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 0; }
+.anatomy li { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.anatomy li:last-child { border-bottom: 1px solid var(--line); }
+.anatomy .rs { font-family: var(--font-mono); color: var(--accent); font-size: .9rem; padding-top: 2px; }
+.anatomy b { display: block; font-weight: 600; }
+.anatomy span.d { color: var(--muted); font-size: .93rem; }
+.calc h3 { margin-bottom: 4px; }
+.calc .sub { color: var(--muted); font-size: .92rem; margin-bottom: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+.chip { font: inherit; font-size: .85rem; cursor: pointer; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); }
+.chip[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.mass-line { font-family: var(--font-mono); font-size: 1.05rem; margin-bottom: 6px; }
+.compare { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: var(--bg); color: var(--muted); font-size: .93rem; }
+.calc .stats { grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+
+/* Quiz */
+.quiz { max-width: 720px; margin-top: 28px; }
+.sets { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 18px; }
+.setbtn { text-align: left; font: inherit; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; cursor: pointer; }
+.setbtn:hover { border-color: var(--accent); }
+.setbtn b { display: block; font-family: var(--font-display); font-size: 1.1rem; }
+.setbtn span { color: var(--muted); font-size: .9rem; }
+.qmeta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-family: var(--font-mono); font-size: .78rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.bar { height: 4px; background: var(--line); border-radius: 2px; margin: 10px 0 22px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.qtext { font-size: 1.4rem; margin-bottom: 18px; }
+.opts { display: grid; gap: 10px; }
+.opt { text-align: left; font: inherit; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 13px 16px; cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--muted); }
+.opt:disabled { cursor: default; }
+.opt.ok { border-color: var(--good); background: color-mix(in srgb, var(--good) 16%, var(--surface-2)); }
+.opt.no { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, var(--surface-2)); }
+.feedback { margin-top: 16px; color: var(--muted); }
+.feedback strong { color: var(--fg); }
+.qnav { margin-top: 18px; }
+.score { font-family: var(--font-display); font-size: 3rem; color: var(--accent); }
+
+/* Planet lab */
+.lab { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: 24px; margin-top: 28px; align-items: start; }
+.controls { display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; }
+.field .row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.field output { font-family: var(--font-mono); font-size: .88rem; color: var(--fg); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 8px; }
+fieldset:disabled { opacity: .45; }
+legend { font-size: .9rem; color: var(--muted); padding: 0; margin-bottom: 8px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: block; padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font-size: .88rem; }
+.seg input:checked + span { border-color: var(--accent); color: var(--accent); }
+.seg input:focus-visible + span { outline: 2px solid var(--cool); outline-offset: 2px; }
+.check { display: flex; gap: 10px; align-items: center; color: var(--fg); cursor: pointer; }
+.check input { accent-color: var(--accent); width: 18px; height: 18px; }
+.preview { display: grid; gap: 16px; }
+.preview svg { width: 100%; height: auto; display: block; border-radius: 12px; background: #04060d; }
+.svgt { fill: var(--muted); font: 12px var(--font-body); }
+.verdict { padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); font-size: .95rem; }
+.verdict b { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin-right: 8px; }
+.verdict.good b { color: var(--good); } .verdict.warn b { color: var(--warn); } .verdict.bad b { color: var(--bad); }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.presets span { font-size: .9rem; color: var(--muted); }
+
+@media (max-width: 800px) {
+  .detail, .bh-cols, .lab { grid-template-columns: minmax(0, 1fr); }
+  .detail { gap: 18px; }
+  .card { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .sphere { transition: none; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Space <span>Explorer</span></div>
+    <nav aria-label="Sections">
+      <a href="#planets">Planets</a>
+      <a href="#black-holes">Black holes</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#build">Build a planet</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<!-- PLANETS -->
+<section id="sec-planets">
+  <div class="eyebrow">The solar system</div>
+  <h2>Eight worlds around one star</h2>
+  <p class="lede">Pick a planet to see how big it is, how long its day and year last, and what you would weigh there.</p>
+  <div class="picker" id="picker" role="group" aria-label="Choose a planet"></div>
+  <div class="card detail">
+    <div>
+      <div class="stage"><div class="sphere" id="sphere"></div></div>
+      <p class="scale-note">Relative size, compressed so small planets stay visible</p>
+    </div>
+    <div>
+      <h3 id="pname-d"></h3>
+      <p class="blurb" id="pblurb"></p>
+      <dl class="stats" id="pstats-d"></dl>
+      <div class="weight">
+        <label for="wt">Your weight in kg</label>
+        <input type="number" id="wt" min="1" max="500" value="60" inputmode="decimal">
+        <output id="wout" for="wt"></output>
+      </div>
+    </div>
+  </div>
+  <div class="ruler-wrap">
+    <div class="ruler" id="ruler"></div>
+    <div class="rends"><span>0.3 AU</span><span>Distance from the Sun, log scale</span><span>32 AU</span></div>
+  </div>
+  <p class="fine">1 AU is the average Earth–Sun distance, about 150 million km. Moon counts for the giant planets keep growing as new ones are found.</p>
+</section>
+
+<!-- BLACK HOLES -->
+<section id="sec-black-holes" hidden="">
+  <div class="eyebrow">Extreme gravity</div>
+  <h2>Where gravity wins</h2>
+  <p class="lede">A black hole is a region where gravity is so strong that nothing, not even light, can leave. Matter spiraling in forms a glowing disk that can outshine whole galaxies.</p>
+  <div class="bh-stage"><canvas id="bh-canvas" role="img" aria-label="Animated black hole with a glowing accretion disk bending over its top"></canvas></div>
+
+  <div class="bh-cols">
+    <div>
+      <h3>Anatomy, from the outside in</h3>
+      <p class="fine" style="margin-top:6px">Distances use r<sub>s</sub>, the Schwarzschild radius, for a black hole that does not spin.</p>
+      <ul class="anatomy">
+        <li><div class="rs">3 r<sub>s</sub></div><div><b>Innermost stable orbit</b><span class="d">The closest circular orbit matter can hold. Inside it, gas plunges in. The bright disk ends near here.</span></div></li>
+        <li><div class="rs">1.5 r<sub>s</sub></div><div><b>Photon sphere</b><span class="d">Light can circle the hole here. It makes the thin bright ring in the picture.</span></div></li>
+        <li><div class="rs">1 r<sub>s</sub></div><div><b>Event horizon</b><span class="d">The point of no return. Escaping would take a speed greater than light.</span></div></li>
+        <li><div class="rs">0</div><div><b>Singularity</b><span class="d">The center, where general relativity predicts unlimited density. What really happens there is unknown.</span></div></li>
+      </ul>
+    </div>
+    <div class="card calc">
+      <h3>How big is the horizon?</h3>
+      <p class="sub">The event horizon radius grows in direct proportion to mass: about 2.95 km for each Sun's worth.</p>
+      <div class="chips" id="bh-chips" role="group" aria-label="Preset masses"></div>
+      <label for="mass">Mass (drag to change, log scale)</label>
+      <input type="range" id="mass" min="-6.5" max="10" step="0.01" value="0">
+      <div class="mass-line" id="mass-line"></div>
+      <dl class="stats" id="bh-stats"></dl>
+      <div class="compare" id="bh-compare"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="sec-quiz" hidden="">
+  <div class="eyebrow">Test yourself</div>
+  <h2>Space quizzes</h2>
+  <div class="quiz card" id="quiz-root"></div>
+</section>
+
+<!-- BUILD -->
+<section id="sec-build" hidden="">
+  <div class="eyebrow">Planet lab</div>
+  <h2>Build your own planet</h2>
+  <p class="lede">Choose a type, a size, and an orbit around a Sun-like star. The lab works out gravity, temperature, and whether anything could live there. It is a simplified model, good for getting a feel for how planets differ.</p>
+  <div class="lab">
+    <div class="card controls">
+      <div class="field"><label for="pname">Name your planet</label><input type="text" id="pname" maxlength="24" value="Aurelia"></div>
+      <fieldset id="types"><legend>Planet type</legend>
+        <div class="seg">
+          <label><input type="radio" name="ptype" value="rocky" checked=""><span>Rocky</span></label>
+          <label><input type="radio" name="ptype" value="ocean"><span>Water world</span></label>
+          <label><input type="radio" name="ptype" value="ice"><span>Ice giant</span></label>
+          <label><input type="radio" name="ptype" value="gas"><span>Gas giant</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><div class="row"><label for="pr">Radius</label><output id="pr-out" for="pr"></output></div><input type="range" id="pr"></div>
+      <div class="field"><div class="row"><label for="pd">Distance from star</label><output id="pd-out" for="pd"></output></div><input type="range" id="pd" min="-1.3" max="1" step="0.01" value="0"></div>
+      <fieldset id="atms"><legend>Atmosphere</legend>
+        <div class="seg">
+          <label><input type="radio" name="patm" value="none"><span>None</span></label>
+          <label><input type="radio" name="patm" value="thin"><span>Thin</span></label>
+          <label><input type="radio" name="patm" value="earth" checked=""><span>Earth-like</span></label>
+          <label><input type="radio" name="patm" value="dense"><span>Dense, Venus-like</span></label>
+        </div>
+      </fieldset>
+      <label class="check" for="rings"><input type="checkbox" id="rings"> Add a ring system</label>
+      <div class="presets"><span>Start from</span>
+        <button class="btn" type="button" data-preset="earth">Earth twin</button>
+        <button class="btn" type="button" data-preset="mars">Mars-like</button>
+        <button class="btn" type="button" data-preset="venus">Venus-like</button>
+        <button class="btn" type="button" data-preset="hot">Hot Jupiter</button>
+      </div>
+    </div>
+    <div class="card preview">
+      <h3 id="pn"></h3>
+      <div id="svgwrap"></div>
+      <div class="verdict" id="verdict"></div>
+      <dl class="stats" id="pstats"></dl>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const num = (v, p = 3) => Number(Number(v).toPrecision(p)).toLocaleString('en-US');
+
+/* ---------- Routing ---------- */
+const VIEWS = ['planets', 'black-holes', 'quiz', 'build'];
+function route() {
+  const h = location.hash.slice(1);
+  const k = VIEWS.includes(h) ? h : 'planets';
+  VIEWS.forEach(v => {
+    $('#sec-' + v).hidden = v !== k;
+    const a = $('nav a[href="#' + v + '"]');
+    if (v === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  if (k === 'black-holes') bhStart(); else bhStop();
+}
+addEventListener('hashchange', route);
+
+/* ---------- Planets ---------- */
+const PLANETS = [
+  { n: 'Mercury', c: '#a39b94', d: 4879, au: 0.39, day: '58.6 Earth days', year: '88 Earth days', moons: '0', g: 3.70, t: '167 °C average',
+    b: 'The smallest planet and the closest to the Sun. With almost no atmosphere, its surface swings from about 430 °C by day to −180 °C at night.' },
+  { n: 'Venus', c: '#e3b96a', d: 12104, au: 0.72, day: '243 Earth days (backwards)', year: '225 Earth days', moons: '0', g: 8.87, t: '464 °C',
+    b: 'Hotter than Mercury thanks to a thick carbon dioxide atmosphere. It spins backwards, and one day there lasts longer than its year.' },
+  { n: 'Earth', c: '#3f7fd4', d: 12742, au: 1.00, day: '24 hours', year: '365.25 days', moons: '1', g: 9.81, t: '15 °C average',
+    b: 'The only world known to host life. About 71% of its surface is covered by liquid water.' },
+  { n: 'Mars', c: '#c1573a', d: 6779, au: 1.52, day: '24.6 hours', year: '687 Earth days', moons: '2', g: 3.71, t: '−65 °C average',
+    b: 'A cold desert with the tallest volcano in the solar system. Olympus Mons rises about 22 km, roughly two and a half times the height of Everest.' },
+  { n: 'Jupiter', c: '#d3a273', d: 139820, au: 5.20, day: '9.9 hours', year: '11.9 Earth years', moons: '95+', g: 24.79, t: '−110 °C (cloud tops)', gas: true,
+    b: 'A gas giant with more than twice the mass of all the other planets combined. Its Great Red Spot is a storm that has lasted for centuries.' },
+  { n: 'Saturn', c: '#e0c88f', d: 116460, au: 9.58, day: '10.7 hours', year: '29.4 Earth years', moons: '270+', g: 10.44, t: '−140 °C (cloud tops)', gas: true, ring: true,
+    b: 'Famous for rings made mostly of water ice. It is the least dense planet, less dense than water itself.' },
+  { n: 'Uranus', c: '#8fd3d9', d: 50724, au: 19.2, day: '17.2 hours (backwards)', year: '84 Earth years', moons: '28+', g: 8.69, t: '−195 °C (cloud tops)', gas: true,
+    b: 'An ice giant tipped on its side, with an axial tilt of about 98 degrees. Each pole spends decades in sunlight, then decades in darkness.' },
+  { n: 'Neptune', c: '#4a68e0', d: 49244, au: 30.07, day: '16.1 hours', year: '165 Earth years', moons: '16', g: 11.15, t: '−200 °C (cloud tops)', gas: true,
+    b: 'The most distant planet, with the fastest winds measured in the solar system, above 2,000 km/h.' }
+];
+let selPlanet = 2;
+const LOG_MIN = Math.log10(0.3), LOG_MAX = Math.log10(32);
+const pct = au => ((Math.log10(au) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * 100;
+
+PLANETS.forEach((p, i) => {
+  const b = document.createElement('button');
+  b.className = 'pbtn'; b.type = 'button'; b.dataset.i = i;
+  b.style.setProperty('--c', p.c);
+  b.innerHTML = '<span class="dot"></span>' + p.n;
+  $('#picker').appendChild(b);
+  const m = document.createElement('button');
+  m.className = 'rmark'; m.type = 'button'; m.dataset.i = i; m.setAttribute('aria-label', p.n);
+  m.style.left = pct(p.au) + '%';
+  $('#ruler').appendChild(m);
+});
+const rlabel = document.createElement('span'); rlabel.className = 'rlabel'; $('#ruler').appendChild(rlabel);
+document.addEventListener('click', e => {
+  const t = e.target.closest('.pbtn, .rmark');
+  if (t && t.dataset.i !== undefined) { selPlanet = +t.dataset.i; updatePlanet(); }
+});
+$('#wt').addEventListener('input', updateWeight);
+
+function updatePlanet() {
+  const p = PLANETS[selPlanet];
+  $$('.pbtn').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === selPlanet));
+  $$('.rmark').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === selPlanet));
+  const sp = $('#sphere');
+  sp.style.setProperty('--c', p.c);
+  sp.style.width = (40 + 160 * Math.sqrt(p.d / 139820)) + 'px';
+  sp.classList.toggle('ring', !!p.ring);
+  $('#pname-d').textContent = p.n;
+  $('#pblurb').textContent = p.b;
+  const rows = [
+    ['Diameter', p.d.toLocaleString('en-US') + ' km'], ['Distance from Sun', p.au.toFixed(2) + ' AU'],
+    ['Length of day', p.day], ['Length of year', p.year], ['Known moons', p.moons],
+    ['Surface gravity', p.g + ' m/s²'], ['Temperature', p.t]
+  ];
+  $('#pstats-d').innerHTML = rows.map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('');
+  const x = pct(p.au);
+  rlabel.textContent = p.n + ' · ' + p.au.toFixed(2) + ' AU';
+  rlabel.style.left = x + '%';
+  rlabel.style.transform = x > 80 ? 'translateX(-100%)' : (x < 12 ? 'none' : 'translateX(-50%)');
+  updateWeight();
+}
+function updateWeight() {
+  const p = PLANETS[selPlanet], w = parseFloat($('#wt').value);
+  $('#wout').textContent = (isFinite(w) && w > 0)
+    ? `Feels like ${(w * p.g / 9.81).toFixed(1)} kg on ${p.n}${p.gas ? ' (at the cloud tops)' : ''}`
+    : 'Enter a weight above 0';
+}
+
+/* ---------- Black holes ---------- */
+const bh = { cv: $('#bh-canvas'), raf: 0, last: 0, stars: [], parts: [] };
+const bctx = bh.cv.getContext('2d');
+for (let i = 0; i < 140; i++) bh.stars.push([Math.random(), Math.random(), Math.random() * 0.6 + 0.2, Math.random() < 0.15 ? 2 : 1]);
+for (let i = 0; i < 1600; i++) {
+  const r = 1.4 + Math.pow(Math.random(), 1.5) * 2.5, k = (r - 1.4) / 2.5;
+  bh.parts.push({ r, th: Math.random() * 6.283, w: 1.7 * Math.pow(r, -1.5), a: 0.55 - 0.3 * k,
+    col: `hsl(${44 - 26 * k} 90% ${88 - 38 * k}%)`, sz: 1 + Math.random() * 1.4 });
+}
+function bhSize() {
+  const dpr = Math.min(2, devicePixelRatio || 1);
+  bh.cv.width = Math.round(bh.cv.clientWidth * dpr);
+  bh.cv.height = Math.round(bh.cv.clientHeight * dpr);
+  bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function bhDraw() {
+  const w = bh.cv.clientWidth, h = bh.cv.clientHeight;
+  if (!w || !h) return;
+  const cx = w / 2, cy = h / 2, s = Math.min(h * 0.2, w * 0.14);
+  bctx.globalCompositeOperation = 'source-over'; bctx.globalAlpha = 1;
+  bctx.fillStyle = '#04060d'; bctx.fillRect(0, 0, w, h);
+  bctx.fillStyle = '#cfd6ff';
+  for (const st of bh.stars) { bctx.globalAlpha = st[2]; bctx.fillRect(st[0] * w, st[1] * h, st[3], st[3]); }
+  const pass = front => {
+    for (const p of bh.parts) {
+      const sn = Math.sin(p.th);
+      if ((sn >= 0) !== front) continue;
+      const cs = Math.cos(p.th);
+      bctx.globalAlpha = Math.min(1, p.a * (1 - 0.6 * cs));
+      bctx.fillStyle = p.col;
+      bctx.fillRect(cx + p.r * cs * s, cy + (front ? sn * p.r * 0.2 : sn * p.r * 0.95) * s, p.sz, p.sz);
+    }
+  };
+  bctx.globalCompositeOperation = 'lighter'; pass(false);
+  bctx.globalCompositeOperation = 'source-over'; bctx.globalAlpha = 1;
+  bctx.fillStyle = '#000'; bctx.beginPath(); bctx.arc(cx, cy, s, 0, 6.283); bctx.fill();
+  bctx.strokeStyle = 'rgba(255,214,150,.18)'; bctx.lineWidth = 6; bctx.stroke();
+  bctx.strokeStyle = 'rgba(255,236,200,.85)'; bctx.lineWidth = 1.4; bctx.stroke();
+  bctx.globalCompositeOperation = 'lighter'; pass(true);
+  bctx.globalCompositeOperation = 'source-over'; bctx.globalAlpha = 1;
+}
+function bhFrame(t) {
+  const dt = Math.min(0.05, (t - bh.last) / 1000 || 0);
+  bh.last = t;
+  for (const p of bh.parts) p.th += p.w * dt;
+  bhDraw();
+  bh.raf = requestAnimationFrame(bhFrame);
+}
+function bhStart() {
+  bhSize(); cancelAnimationFrame(bh.raf);
+  if (reduceMotion) { bhDraw(); return; }
+  bh.last = performance.now(); bh.raf = requestAnimationFrame(bhFrame);
+}
+function bhStop() { cancelAnimationFrame(bh.raf); }
+addEventListener('resize', () => { if (!$('#sec-black-holes').hidden) { bhSize(); bhDraw(); } });
+
+const KM_PER_MSUN = 2.95325, AU_KM = 149597870.7;
+const BH_PRESETS = [['Earth', 3.003e-6], ['Sun', 1], ['Cygnus X-1', 21], ['Sagittarius A*', 4.3e6], ['M87*', 6.5e9]];
+BH_PRESETS.forEach(([n, m]) => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.type = 'button'; b.textContent = n; b.dataset.m = m;
+  $('#bh-chips').appendChild(b);
+});
+$('#bh-chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  $('#mass').value = Math.log10(+b.dataset.m); updateBH();
+});
+$('#mass').addEventListener('input', updateBH);
+function fmtMass(m) {
+  if (m < 0.01) { const [b, e] = m.toExponential(2).split('e'); return `${b} × 10<sup>${parseInt(e, 10)}</sup>`; }
+  if (m < 1e6) return num(m);
+  if (m < 1e9) return num(m / 1e6) + ' million';
+  return num(m / 1e9) + ' billion';
+}
+function fmtLen(km) {
+  if (km < 1e-3) return num(km * 1e6) + ' mm';
+  if (km < 1) return num(km * 1000) + ' m';
+  if (km < 1e6) return num(km) + ' km';
+  const au = km / AU_KM;
+  return au < 1 ? num(km / 1e6) + ' million km' : num(au) + ' AU';
+}
+function bhCompare(km) {
+  const au = km / AU_KM;
+  if (km < 0.1) return 'Small enough to hold in your hand, about the size of a marble.';
+  if (km < 200) return 'This horizon would fit inside a large city.';
+  if (km < 695700) return `About ${num(km / 6371)} times the radius of Earth.`;
+  if (au < 0.39) return `About ${num(km / 695700)} times the radius of the Sun. The whole horizon fits inside Mercury's orbit.`;
+  if (au < 1) return 'Reaches out almost as far as Earth\'s orbit.';
+  if (au < 30) return `Reaches ${num(au)} AU from the center, wider than Earth's orbit.`;
+  return `Reaches ${num(au)} AU, wider than Neptune's orbit at 30 AU.`;
+}
+function updateBH() {
+  const v = parseFloat($('#mass').value), m = Math.pow(10, v);
+  const km = m * KM_PER_MSUN;
+  const hit = BH_PRESETS.find(p => Math.abs(Math.log10(p[1]) - v) < 0.015);
+  $$('.chip').forEach(c => c.setAttribute('aria-pressed', !!hit && c.textContent === hit[0]));
+  $('#mass-line').innerHTML = `${fmtMass(m)} solar masses` + (hit ? ` · ${hit[0]}` : '');
+  $('#bh-stats').innerHTML =
+    `<div><dt>Event horizon radius (1 r<sub>s</sub>)</dt><dd>${fmtLen(km)}</dd></div>` +
+    `<div><dt>Photon sphere (1.5 r<sub>s</sub>)</dt><dd>${fmtLen(km * 1.5)}</dd></div>` +
+    `<div><dt>Innermost stable orbit (3 r<sub>s</sub>)</dt><dd>${fmtLen(km * 3)}</dd></div>`;
+  $('#bh-compare').textContent = bhCompare(km);
+}
+
+/* ---------- Quiz ---------- */
+const QSETS = {
+  solar: { title: 'Solar System', blurb: 'Planets, moons, and volcanoes', qs: [
+    { q: 'Which planet has the shortest year?', a: 'Mercury', w: ['Venus', 'Earth', 'Mars'], x: 'Mercury orbits the Sun in just 88 Earth days.' },
+    { q: 'Which planet is the hottest?', a: 'Venus', w: ['Mercury', 'Earth', 'Mars'], x: 'Venus has a thick carbon dioxide atmosphere that traps heat, keeping the surface near 464 °C, hotter than Mercury even though it is farther from the Sun.' },
+    { q: 'Which planet has the most known moons?', a: 'Saturn', w: ['Jupiter', 'Uranus', 'Neptune'], x: 'Saturn has more than 270 confirmed moons, ahead of Jupiter with 95 or more. The counts keep rising as new moons are found.' },
+    { q: 'About how long does sunlight take to reach Earth?', a: 'About 8 minutes', w: ['About 8 seconds', 'About 8 hours', 'About 8 days'], x: 'Light covers the 150 million km in roughly 8 minutes and 20 seconds.' },
+    { q: 'Where is the largest volcano in the solar system?', a: 'Mars (Olympus Mons)', w: ['Earth (Mauna Kea)', 'Venus (Maat Mons)', 'Jupiter\'s moon Io'], x: 'Olympus Mons on Mars is about 22 km high and roughly 600 km wide.' },
+    { q: 'Which planet spins tipped over on its side?', a: 'Uranus', w: ['Neptune', 'Saturn', 'Mars'], x: 'Uranus has an axial tilt of about 98 degrees, so it rolls around the Sun like a ball.' }
+  ] },
+  deep: { title: 'Deep Space', blurb: 'Stars, galaxies, and black holes', qs: [
+    { q: 'What is the boundary around a black hole beyond which nothing can escape?', a: 'The event horizon', w: ['The accretion disk', 'The corona', 'The singularity'], x: 'At the event horizon, the speed needed to escape equals the speed of light.' },
+    { q: 'What will our Sun become in about 5 billion years?', a: 'A red giant', w: ['A supernova', 'A black hole', 'A neutron star'], x: 'The Sun is too light to explode or collapse into a black hole. It will swell into a red giant, then shrink into a white dwarf.' },
+    { q: 'What is Sagittarius A*?', a: 'A supermassive black hole', w: ['A red supergiant star', 'A neutron star', 'A nebula'], x: 'It sits at the center of the Milky Way and holds about 4 million times the mass of the Sun.' },
+    { q: 'What does a light-year measure?', a: 'Distance', w: ['Time', 'Brightness', 'Mass'], x: 'A light-year is the distance light travels in one year, about 9.46 trillion km.' },
+    { q: 'Which star is the closest to the Sun?', a: 'Proxima Centauri', w: ['Sirius', 'Polaris', 'Betelgeuse'], x: 'Proxima Centauri is about 4.2 light-years away. Sirius, the brightest star in our night sky, is about 8.6.' },
+    { q: 'What type of galaxy is the Milky Way?', a: 'Barred spiral', w: ['Elliptical', 'Irregular', 'Lenticular'], x: 'Our galaxy has spiral arms that extend from a bar of stars across its center.' }
+  ] }
+};
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const quiz = { key: null, qs: [], i: 0, score: 0, opts: [], done: false };
+function quizHome() {
+  $('#quiz-root').innerHTML = `<h3>Pick a quiz</h3><p class="lede" style="margin-top:6px">Six questions each. Answers come with a short explanation.</p>
+    <div class="sets">${Object.entries(QSETS).map(([k, s]) => `<button class="setbtn" type="button" data-set="${k}"><b>${s.title}</b><span>${s.blurb}</span></button>`).join('')}</div>`;
+}
+function quizStart(key) {
+  quiz.key = key; quiz.qs = shuffle(QSETS[key].qs); quiz.i = 0; quiz.score = 0; quizAsk();
+}
+function quizAsk() {
+  const q = quiz.qs[quiz.i];
+  quiz.opts = shuffle([q.a, ...q.w]); quiz.done = false;
+  $('#quiz-root').innerHTML = `
+    <div class="qmeta"><span>${QSETS[quiz.key].title} · Question ${quiz.i + 1} of ${quiz.qs.length}</span><span>Score ${quiz.score}</span></div>
+    <div class="bar"><i style="width:${(quiz.i / quiz.qs.length) * 100}%"></i></div>
+    <h3 class="qtext">${q.q}</h3>
+    <div class="opts">${quiz.opts.map((o, n) => `<button class="opt" type="button" data-n="${n}">${o}</button>`).join('')}</div>
+    <div class="feedback" aria-live="polite"></div><div class="qnav"></div>`;
+}
+function quizAnswer(n) {
+  if (quiz.done) return; quiz.done = true;
+  const q = quiz.qs[quiz.i], pick = quiz.opts[n], right = pick === q.a;
+  if (right) quiz.score++;
+  $$('.opt').forEach((b, k) => { b.disabled = true; if (quiz.opts[k] === q.a) b.classList.add('ok'); else if (k === n) b.classList.add('no'); });
+  $('.feedback').innerHTML = `<strong>${right ? 'Correct.' : 'Not quite. The answer is ' + q.a + '.'}</strong> ${q.x}`;
+  const last = quiz.i === quiz.qs.length - 1;
+  $('.qnav').innerHTML = `<button class="btn primary" type="button" data-act="next">${last ? 'See results' : 'Next question'}</button>`;
+  $('[data-act="next"]').focus();
+}
+function quizEnd() {
+  const n = quiz.qs.length, s = quiz.score;
+  const msg = s === n ? 'A perfect run. Mission control is impressed.' : s >= n - 2 ? 'Strong result. You know your way around the sky.' : s >= n / 2 ? 'Solid start. The planets and stars have more to show you.' : 'Good first orbit. Try the planet pages and play again.';
+  const other = quiz.key === 'solar' ? 'deep' : 'solar';
+  $('#quiz-root').innerHTML = `<div class="qmeta"><span>${QSETS[quiz.key].title} · Finished</span></div>
+    <div class="score">${s} / ${n}</div><p class="lede" style="margin:8px 0 20px">${msg}</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px"><button class="btn primary" type="button" data-set="${quiz.key}">Play again</button>
+    <button class="btn" type="button" data-set="${other}">Try ${QSETS[other].title}</button></div>`;
+}
+$('#quiz-root').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]'), opt = e.target.closest('.opt'), act = e.target.closest('[data-act]');
+  if (set) quizStart(set.dataset.set);
+  else if (opt) quizAnswer(+opt.dataset.n);
+  else if (act) { quiz.i++; if (quiz.i >= quiz.qs.length) quizEnd(); else quizAsk(); }
+});
+
+/* ---------- Planet lab ---------- */
+const TYPES = {
+  rocky: { min: 0.3, max: 2, val: 1, step: 0.05, rho: 5.5, solid: true },
+  ocean: { min: 0.5, max: 2.5, val: 1.4, step: 0.05, rho: 3.0, solid: true },
+  ice: { min: 2, max: 6, val: 3.9, step: 0.1, rho: 1.6, solid: false },
+  gas: { min: 6, max: 12, val: 11, step: 0.1, rho: 1.3, solid: false }
+};
+const ATM = { none: { A: 0.1, gh: 0 }, thin: { A: 0.2, gh: 5 }, earth: { A: 0.3, gh: 33 }, dense: { A: 0.75, gh: 500 } };
+const PRESETS = {
+  earth: { type: 'rocky', R: 1, d: 1, atm: 'earth', rings: false },
+  mars: { type: 'rocky', R: 0.53, d: 1.52, atm: 'thin', rings: false },
+  venus: { type: 'rocky', R: 0.95, d: 0.72, atm: 'dense', rings: false },
+  hot: { type: 'gas', R: 12, d: 0.05, atm: 'earth', rings: false }
+};
+const lab = { type: 'rocky', R: 1, d: 1, atm: 'earth', rings: false };
+const radioVal = n => $(`input[name="${n}"]:checked`).value;
+
+function setType(t, keepR) {
+  lab.type = t;
+  const c = TYPES[t], pr = $('#pr');
+  pr.min = c.min; pr.max = c.max; pr.step = c.step;
+  pr.value = keepR !== undefined ? keepR : c.val;
+  $('#atms').disabled = !c.solid;
+}
+function readLab() {
+  lab.type = radioVal('ptype'); lab.atm = radioVal('patm');
+  lab.R = parseFloat($('#pr').value); lab.d = Math.pow(10, parseFloat($('#pd').value));
+  lab.rings = $('#rings').checked;
+}
+function calc() {
+  const t = TYPES[lab.type], R = lab.R, M = Math.pow(R, 3) * t.rho / 5.51;
+  const g = 9.81 * M / (R * R), esc = 11.19 * Math.sqrt(M / R);
+  const a = t.solid ? ATM[lab.atm] : { A: 0.3, gh: 0 };
+  const teq = 278.6 * Math.pow(1 - a.A, 0.25) / Math.sqrt(lab.d);
+  const tc = teq + a.gh - 273.15, yr = Math.pow(lab.d, 1.5);
+  return { M, g, gG: g / 9.81, esc, tc, yr, solid: t.solid };
+}
+function verdict(c) {
+  if (!c.solid) return ['warn', 'Gas world', 'No solid surface to stand on. The temperature shown is at the cloud tops.'];
+  if (lab.atm === 'none') return ['bad', 'Airless', 'With no atmosphere there is no liquid water on the surface, and temperatures swing wildly between day and night.'];
+  if (c.esc < 4.5) return ['bad', 'Leaky', 'Gravity is too weak to hold an atmosphere for long. It would slowly escape into space.'];
+  if (c.gG > 2.5) return ['bad', 'Crushing', `Surface gravity is ${c.gG.toFixed(1)} times Earth's, which would be crushing for anything that evolved on Earth.`];
+  if (c.tc > 60) return ['bad', 'Too hot', 'Any water would boil away. This is closer to Venus than to Earth.'];
+  if (c.tc < 0) return ['warn', 'Frozen', 'The average temperature is below freezing, so water would stay locked in ice.'];
+  return ['good', 'Promising', lab.type === 'ocean' ? 'Warm enough for liquid water. A planet-wide ocean could exist here.' : 'Liquid water could exist on the surface. This is the kind of world astronomers hunt for.'];
+}
+function baseColor(c) {
+  if (lab.type === 'gas') return '#d9a066';
+  if (lab.type === 'ice') return '#6cc7d6';
+  if (lab.type === 'ocean') return '#2f6fcf';
+  if (lab.atm === 'none') return '#8d8a86';
+  if (lab.atm === 'dense') return '#e0b46a';
+  if (c.tc > 70) return '#b4532f';
+  if (c.tc < -25) return '#b9c6d6';
+  return c.tc <= 45 ? '#3f8f6a' : '#b09062';
+}
+function planetSVG(c) {
+  const cx = 290, cy = 160, r = Math.max(5, 12.5 * lab.R), base = baseColor(c);
+  const solid = TYPES[lab.type].solid, glowAtm = solid && lab.atm !== 'none';
+  let bands = '';
+  if (!solid) for (let i = 0; i < 10; i++) bands += `<rect x="${cx - r}" y="${cy - r + (2 * r / 10) * i}" width="${2 * r}" height="${2 * r / 10 + 0.5}" fill="${i % 2 ? '#fff' : '#000'}" opacity="${lab.type === 'gas' ? 0.13 : 0.07}"/>`;
+  const rx = r * 1.55, ry = rx * 0.22, rw = r * 0.22;
+  const ring = lab.rings ? `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="#d9c59a" stroke-opacity=".8" stroke-width="${rw}"` : '';
+  const glow = glowAtm ? `<circle cx="${cx}" cy="${cy}" r="${r * 1.04}" fill="none" stroke="${lab.atm === 'dense' ? '#ffd9a0' : '#8fc4ff'}" stroke-opacity="${{ thin: 0.18, earth: 0.32, dense: 0.5 }[lab.atm]}" stroke-width="${Math.max(2, r * 0.05)}"/>` : '';
+  return `<svg viewBox="0 0 560 320" role="img" aria-label="Your planet drawn next to Earth for scale">
+    <defs>
+      <radialGradient id="sh" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></radialGradient>
+      <clipPath id="pc"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>
+      <clipPath id="front"><rect x="0" y="${cy}" width="560" height="200"/></clipPath>
+    </defs>
+    ${lab.rings ? `<g transform="rotate(-10 ${cx} ${cy})">${ring}/></g>` : ''}
+    ${glow}
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="${base}"/>
+    <g clip-path="url(#pc)">${bands}</g>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#sh)"/>
+    ${lab.rings ? `<g transform="rotate(-10 ${cx} ${cy})">${ring} clip-path="url(#front)"/></g>` : ''}
+    <circle cx="30" cy="294" r="12.5" fill="#3f7fd4"/><circle cx="30" cy="294" r="12.5" fill="url(#sh)"/>
+    <text class="svgt" x="50" y="298">Earth, for scale</text>
+  </svg>`;
+}
+function updateLab() {
+  readLab();
+  const c = calc(), t = TYPES[lab.type];
+  $('#pr-out').textContent = `${lab.R.toFixed(2)} × Earth · ${num(6371 * lab.R, 4)} km`;
+  $('#pd-out').textContent = `${lab.d < 1 ? lab.d.toFixed(2) : lab.d.toFixed(1)} AU`;
+  $('#pn').textContent = $('#pname').value.trim() || 'Unnamed planet';
+  $('#svgwrap').innerHTML = planetSVG(c);
+  const v = verdict(c);
+  $('#verdict').className = 'verdict ' + v[0];
+  $('#verdict').innerHTML = `<b>${v[1]}</b>${v[2]}`;
+  const mass = c.M >= 50 ? `${num(c.M)} Earths (${(c.M / 317.8).toFixed(2)} Jupiters)` : `${num(c.M)} Earths`;
+  const yr = c.yr < 1 ? `${num(c.yr * 365.25)} days` : `${num(c.yr)} years`;
+  const rows = [['Mass', mass], ['Surface gravity', `${c.gG.toFixed(2)} g`], ['Escape velocity', `${num(c.esc)} km/s`],
+    [t.solid ? 'Surface temperature' : 'Cloud-top temperature', `${Math.round(c.tc)} °C`], ['Length of year', yr], ['Density', `${t.rho} g/cm³`]];
+  $('#pstats').innerHTML = rows.map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('');
+}
+$('#types').addEventListener('change', () => { setType(radioVal('ptype')); updateLab(); });
+$$('#pr, #pd, #pname, #rings, #atms input').forEach(el => el.addEventListener('input', updateLab));
+$$('[data-preset]').forEach(b => b.addEventListener('click', () => {
+  const p = PRESETS[b.dataset.preset];
+  $(`input[name="ptype"][value="${p.type}"]`).checked = true;
+  $(`input[name="patm"][value="${p.atm}"]`).checked = true;
+  setType(p.type, p.R);
+  $('#pd').value = Math.log10(p.d); $('#rings').checked = p.rings;
+  updateLab();
+}));
+
+/* ---------- Start ---------- */
+updatePlanet(); updateBH(); quizHome(); setType('rocky'); updateLab(); route();
+</script>
+
+</body></html>
